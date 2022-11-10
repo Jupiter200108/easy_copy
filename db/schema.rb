@@ -10,11 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_08_150523) do
+ActiveRecord::Schema.define(version: 2022_11_10_101218) do
+
+  create_table "folder_hierarchies", id: false, force: :cascade do |t|
+    t.integer "ancestor_id", null: false
+    t.integer "descendant_id", null: false
+    t.integer "generations", null: false
+    t.index ["ancestor_id", "descendant_id", "generations"], name: "folder_anc_desc_idx", unique: true
+    t.index ["descendant_id"], name: "folder_desc_idx"
+  end
 
   create_table "folders", force: :cascade do |t|
+    t.integer "parent_id"
     t.string "name"
-    t.string "ancestry"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
